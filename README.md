@@ -50,3 +50,15 @@ This project detects:
 
 
 
+\## 🎥 Project Demo Video
+
+
+
+\[!\[Watch the demo](https://img.youtube.com/vi/AyeHHHlBlMY/0.jpg)](https://youtu.be/AyeHHHlBlMY)
+
+
+
+👉 Click the image to watch the full demo on YouTube.
+
+
+
