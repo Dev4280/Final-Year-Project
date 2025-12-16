@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}Result – AI Hospital{% endblock %}
+
+{% block content %}
+
+<!-- Custom CSS for Side-by-Side Layout -->
+<style>
+    .result-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    /* Grid Layout: Side by Side */
+    .result-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Equal 50/50 split */
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    /* Common Card Styling */
+    .result-card {
+        border-radius: 12px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Image Styling */
+    .result-img {
+        width: 100%;
+        max-width: 400px; /* Limit image width */
+        height: 300px;    /* Fixed height for alignment */
+        object-fit: contain; /* Keep aspect ratio */
+        border-radius: 8px;
+        margin-top: 20px;
+        background-color: #000; /* Black background for X-rays looks better */
+    }
+
+    /* --- CONDITIONAL STYLES --- */
+    
+    /* 1. Normal / Default Style (Blue/White) */
+    .style-normal {
+        background-color: #ffffff;
+        border: 2px solid #0056b3; /* Blue border */
+        color: #333;
+    }
+
+    /* 2. Disease Detected Style (Red) */
+    .style-disease {
+        background-color: #f8d7da; /* Light Red Background */
+        border: 2px solid #dc3545; /* Red Border */
+        color: #721c24; /* Dark Red Text */
+    }
+
+    /* Typography */
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .result-text {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+    }
+
+    /* Responsive: Stack on mobile */
+    @media (max-width: 768px) {
+        .result-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<section style="background-color: #f8f9fa; min-height: 100vh;">
+  
+  <!-- Back Link -->
+  <div class="container" style="padding-top: 20px;">
+      <a href="{{ url_for('services_page') }}" style="text-decoration: none; color: #333;">&larr; Back to Services</a>
+  </div>
+
+  <div class="result-container">
+    
+    <!-- Logic to determine if disease is present -->
+    <!-- We check if result is NOT 'Normal' -->
+    {% set is_disease = (result != 'Normal') %}
+
+    <div class="result-grid">
+
+        <!-- LEFT BOX: Detection Result & Input Image -->
+        <!-- Logic: If disease, apply 'style-disease', else 'style-normal' -->
+        <div class="result-card {% if is_disease %}style-disease{% else %}style-normal{% endif %}">
+            
+            <div class="card-title">
+                {% if selected_disease == 'pneumonia' %}Pneumonia Detection & Accuracy
+                {% elif selected_disease == 'tb' %}Tuberculosis Detection & Accuracy
+                {% else %}Diabetic Retinopathy Detection{% endif %}
+            </div>
+
+            <p class="result-text"><strong>Result:</strong> {{ result }}</p>
+            <p class="result-text"><strong>Confidence:</strong> {{ "%.2f"|format(confidence) }}%</p>
+            
+            {% if selected_disease == 'pneumonia' %}
+                <p style="font-size: 0.9rem; opacity: 0.8;">Pneumonia probability (ViT + BiLSTM): {{ "%.2f"|format(raw_pneu_prob) }}%</p>
+            {% endif %}
+
+            <div style="margin-top: 10px; font-weight: bold;">Input Image</div>
+            
+            <!-- THE INPUT X-RAY IMAGE -->
+            <img src="/{{ img_path }}" class="result-img" alt="Input X-ray">
+        </div>
+
+        <!-- RIGHT BOX: Grad-CAM (Always White/Normal style) -->
+        <div class="result-card style-normal">
+            <div class="card-title" style="color: #0056b3;">Grad-CAM Explainability</div>
+            
+            {% if gradcam_dataurl %}
+                <img src="{{ gradcam_dataurl }}" class="result-img" alt="Grad-CAM overlay">
+                <p style="margin-top: 15px; font-size: 0.9rem; color: #666;">
+                    Heatmap generated using ResNet50. <br>
+                    Highlighted regions indicate areas contributing to the prediction.
+                </p>
+            {% else %}
+                <p>Grad-CAM not available.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- DOWNLOAD BUTTON (Below the grid, aligned left) -->
+    <div style="text-align: left;">
+        <a href="{{ url_for('download_report') }}" class="btn btn-primary" style="padding: 12px 25px; font-size: 1.1rem;">
+            Download Report
+        </a>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hospital • Doctor Login</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --brand:#0e5c9e;
+  --accent:#ff8f3f;
+  --bg:#f4f7fb;
+}
+body{margin:0;font-family:Poppins;background:var(--bg)}
+.navbar{background:#fff;padding:14px 30px;border-bottom:1px solid #e5eaf0}
+.brand{font-weight:700;color:var(--brand);display:flex;gap:10px}
+.logo{width:26px;height:26px;background:var(--brand);border-radius:6px}
+
+.auth{height:calc(100vh - 70px);display:flex;justify-content:center;align-items:center}
+.card{width:900px;background:#fff;border-radius:18px;display:grid;grid-template-columns:1.2fr .8fr;overflow:hidden}
+.left{background:linear-gradient(135deg,var(--brand),#0b4b82);color:#fff;padding:50px}
+.input{margin:24px 0}
+.input input{width:100%;height:50px;padding:12px;border-radius:10px;border:0}
+button{width:100%;height:46px;background:var(--accent);border:0;border-radius:10px;color:#fff;font-weight:700;cursor:pointer}
+.error{color:#ffd1d1;font-size:13px;margin-top:10px}
+.right{padding:50px}
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="brand">
+    <div class="logo"></div> Hospital
+  </div>
+</header>
+
+<div class="auth">
+<div class="card">
+
+<!-- LEFT -->
+<div class="left">
+  <h2>Doctor Login</h2>
+  <p>Access your dashboard</p>
+
+  <!-- ✅ FLASK LOGIN FORM -->
+  <form action="{{ url_for('login') }}" method="POST">
+
+    <div class="input">
+      <input name="username" type="text" placeholder="Username" required>
+    </div>
+
+    <div class="input">
+      <input name="password" type="password" placeholder="Password" required>
+    </div>
+
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <p style="font-size:12px">
+      Demo → <b>devraj / 1234</b>
+    </p>
+
+    <button type="submit">Login</button>
+  </form>
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+  <h3>New Doctor?</h3>
+  <p>Contact admin to create your account.</p>
+</div>
+
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Hospital – Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <!-- 1. Background Image -->
+  <img src="{{ url_for('static', filename='img/gemini-3.png') }}" 
+       alt="Doctor" 
+       class="hero-bg-img">
+  
+  <!-- 2. Overlay -->
+  <div class="hero-overlay"></div>
+
+  <!-- 3. Content Container -->
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1>Your Doctor's Hospital Website</h1>
+      <p>
+        Modern, professional hospital portal to help patients connect with
+        doctors, explore services and book appointments.
+      </p>
+
+      <div class="hero-sub">
+        High quality stock images to attract patients and visitors.
+      </div>
+
+      <div class="hero-cta">
+        <a href="{{ url_for('services_page') }}" class="btn btn-white">
+          Book Appointment
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

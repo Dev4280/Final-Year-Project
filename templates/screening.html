@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+{% block title %}Screening – AI Hospital{% endblock %}
+
+{% block content %}
+
+<style>
+    /* 
+       1. Apply background to BODY to eliminate the white gap/line.
+       Using !important to override any base.html styles.
+    */
+    body {
+        background: url("{{ url_for('static', filename='img/background.png') }}") no-repeat center center fixed !important;
+        background-size: cover !important;
+    }
+
+    /* Global Styles */
+    :root {
+        --primary-blue: #1a3c6d;
+        --btn-predict-grad: linear-gradient(90deg, #3399cc, #2bc0e4);
+        --btn-random-grad: linear-gradient(90deg, #1e3c72, #2a5298);
+    }
+
+    /* 
+       Main Page Wrapper 
+       - Background is now on body, so we set this to transparent.
+       - Padding-top adjusts spacing so title isn't hidden by navbar.
+    */
+    .screening-wrapper {
+        background: transparent;
+        min-height: 90vh; /* Fill remaining height */
+        width: 100%;
+        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        /* Adjusted padding: reduced to pull content up slightly, but kept enough to clear navbar */
+        padding-top: 80px; 
+        padding-bottom: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Header Text */
+    .screening-header {
+        text-align: center;
+        margin-bottom: 30px;
+        max-width: 800px;
+    }
+    .screening-header h2 {
+        color: var(--primary-blue);
+        font-weight: 800;
+        font-size: 2.2rem;
+        margin-bottom: 15px;
+        text-transform: capitalize;
+    }
+    .screening-header p {
+        color: #555;
+        font-size: 1.05rem;
+    }
+
+    /* Card Container */
+    .screening-card {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        padding: 40px;
+        width: 100%;
+        max-width: 750px;
+        margin-bottom: 20px;
+    }
+
+    /* Form Styles */
+    .form-label {
+        font-weight: 600;
+        color: #333;
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+
+    .read-only-input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e1e1e1;
+        border-radius: 6px;
+        background-color: #fcfcfc;
+        color: #444;
+        font-size: 0.95rem;
+        appearance: none;
+    }
+
+    /* Upload Area */
+    .upload-zone {
+        border: 2px dashed #dbe2e8;
+        background-color: #f8faff;
+        border-radius: 8px;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 30px;
+        transition: border-color 0.3s;
+    }
+    .upload-zone:hover {
+        border-color: #3399cc;
+    }
+    .upload-icon svg {
+        fill: #8c9cab;
+        width: 60px;
+        height: 60px;
+        margin-bottom: 10px;
+    }
+    .custom-file-input {
+        margin-top: 10px;
+        padding: 5px;
+        background: white;
+        border: 1px solid #e1e1e1;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+
+    /* Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    .btn-pill {
+        border: none;
+        padding: 14px 20px;
+        border-radius: 50px;
+        color: white;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+        width: 48%;
+        transition: opacity 0.2s;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .btn-pill:hover {
+        opacity: 0.9;
+        color: white;
+    }
+    .btn-predict { background: var(--btn-predict-grad); }
+    .btn-random { background: #1a3c6d; }
+
+    /* Back Link & Footer */
+    .back-container {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .back-link {
+        color: #555;
+        font-weight: 500;
+        text-decoration: none;
+        font-size: 1rem;
+    }
+    .back-link:hover {
+        color: var(--primary-blue);
+    }
+
+    .screening-footer {
+        background-color: transparent;
+        color: #999;
+        text-align: center;
+        padding: 20px 0;
+        font-size: 0.85rem;
+        width: 100%;
+        margin-top: auto;
+    }
+    
+    .alert-error {
+        background: #fff2f2;
+        color: #d32f2f;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        border: 1px solid #ffcdd2;
+        text-align: center;
+    }
+</style>
+
+<div class="screening-wrapper">
+    
+    <!-- Title Section -->
+    <div class="screening-header">
+      <h2>
+        {% if selected_disease == 'pneumonia' %}
+          Chest X‑ray Screening – Pneumonia
+        {% elif selected_disease == 'tb' %}
+          Chest X‑ray Screening – Tuberculosis
+        {% elif selected_disease == 'dr' %}
+          Fundus Screening – Diabetic Retinopathy
+        {% endif %}
+      </h2>
+      <p>Upload an image or use a random test image to view a demo AI screening result.</p>
+    </div>
+
+    <!-- Main Card -->
+    <div class="screening-card">
+        
+        {% if error %}
+        <div class="alert-error">{{ error }}</div>
+        {% endif %}
+
+        <form class="predict-form" method="POST" action="{{ url_for('upload_and_predict') }}" enctype="multipart/form-data">
+        
+            <input type="hidden" name="disease" value="{{ selected_disease }}">
+            <input type="hidden" name="service_type" value="{{ selected_disease }}">
+
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label class="form-label">Selected service</label>
+                <input type="text" disabled class="read-only-input"
+                    value="{% if selected_disease == 'pneumonia' %}Chest X‑ray Screening – Pneumonia{% elif selected_disease == 'tb' %}Chest X‑ray Screening – Tuberculosis{% else %}Fundus Screening – Diabetic Retinopathy{% endif %}">
+            </div>
+
+            <div class="form-group">
+                <label for="file" class="form-label">Upload image (.jpg / .jpeg / .png)</label>
+                
+                <div class="upload-zone">
+                    <div class="upload-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+                        </svg>
+                    </div>
+                    <input id="file" name="file" type="file" accept=".png,.jpg,.jpeg" required class="custom-file-input" />
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button type="submit" class="btn-pill btn-predict">Predict on my image</button>
+                <a href="{{ url_for('predict_random', disease=selected_disease, service_type=selected_disease) }}" class="btn-pill btn-random">Use random test image</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="back-container">
+        <a href="{{ url_for('services_page') }}" class="back-link">&larr; Back to Services</a>
+    </div>
+
+
+</div>
+
+{% endblock %}

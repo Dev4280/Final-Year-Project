@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Doctors – AI Hospital{% endblock %}
+
+{% block content %}
+<section id="doctors">
+  <div class="container">
+    <div class="section-header">
+      <h2>Meet Our Team</h2>
+      <p>
+        Clinicians, data scientists and engineers working together to build
+        safe and transparent AI tools for healthcare.
+      </p>
+    </div>
+
+    <div class="doctors-grid">
+      <div class="doctor-card">
+        <img src="{{ url_for('static', filename='img/doctor1.png') }}"
+             alt="Doctor 1" />
+        <div class="doctor-body">
+          <div class="doctor-name">Dr. John Carter</div>
+          <div class="doctor-role">Pulmonologist</div>
+          <a href="{{ url_for('contact_page') }}" class="btn btn-outline">Profile</a>
+        </div>
+      </div>
+
+      <div class="doctor-card">
+        <img src="{{ url_for('static', filename='img/doctor3.png') }}"
+             alt="Doctor 2" />
+        <div class="doctor-body">
+          <div class="doctor-name">Dr. Emma Wilson</div>
+          <div class="doctor-role">Radiologist</div>
+          <a href="{{ url_for('contact_page') }}" class="btn btn-outline">Profile</a>
+        </div>
+      </div>
+
+      <div class="doctor-card">
+        <img src="{{ url_for('static', filename='img/doctor2.png') }}"
+             alt="Doctor 3" />
+        <div class="doctor-body">
+          <div class="doctor-name">Dr. Michael Lee</div>
+          <div class="doctor-role">Ophthalmologist</div>
+          <a href="{{ url_for('contact_page') }}" class="btn btn-outline">Profile</a>
+        </div>
+      </div>
+
+      <div class="doctor-card">
+        <img src="{{ url_for('static', filename='img/doctor4.png') }}"
+             alt="Doctor 4" />
+        <div class="doctor-body">
+          <div class="doctor-name">Dr. Rahul Sharma</div>
+          <div class="doctor-role">AI Research Lead</div>
+          <a href="{{ url_for('contact_page') }}" class="btn btn-outline">Profile</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

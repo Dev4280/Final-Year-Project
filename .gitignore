@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+.ipynb_checkpoints/
+
+# Virtual env
+venv/
+env/
+
+# Models (very important)
+*.h5
+*.pth
+*.keras
+
+# Uploaded images & reports
+static/uploads/
+static/gradcam/
+static/reports/
+
+# OS files
+.DS_Store
+Thumbs.db

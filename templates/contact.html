@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Contact – AI Hospital{% endblock %}
+
+{% block content %}
+<section id="contact">
+  <div class="container">
+    <div class="section-header">
+      <h2>Contact Us</h2>
+      <p>
+        For clinical feedback, research collaborations or deployment enquiries,
+        get in touch with our team.
+      </p>
+    </div>
+
+    <div class="contact-layout">
+      <iframe
+        class="map-iframe"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.843821904334!2d144.9560543153189!3d-37.816279742011115!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d43f2a5e8f5%3A0x5045675218ce6e0!2sMelbourne%20VIC%2C%20Australia!5e0!3m2!1sen!2s!4v1614067983494!5m2!1sen!2s"
+        allowfullscreen=""
+        loading="lazy">
+      </iframe>
+
+      <form class="contact-form" onsubmit="return false;">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fullName">Full name</label>
+            <input id="fullName" type="text" placeholder="Your name" />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input id="phone" type="tel" placeholder="+1 555 123 4567" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="you@example.com" />
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input id="subject" type="text" placeholder="Collaboration / Support" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Your message</label>
+          <textarea id="message" placeholder="Type your message here"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Send (demo only)</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
