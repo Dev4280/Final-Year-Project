@@ -49,16 +49,9 @@ This project detects:
 3\. Upload image via web UI
 
 
+## 🎥 Project Demo Video
 
-\## 🎥 Project Demo Video
-
-
-
-\[!\[Watch the demo](https://img.youtube.com/vi/AyeHHHlBlMY/0.jpg)](https://youtu.be/AyeHHHlBlMY)
-
-
-
-👉 Click the image to watch the full demo on YouTube.
+▶️ YouTube Demo: https://www.youtube.com/watch?v=AyeHHHlBlMY
 
 
 
